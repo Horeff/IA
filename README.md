@@ -21,7 +21,7 @@ Conv = home.conv_res(*args)
 lstm = home.lstm_res(*args)
 ```
 * Prediction
-Les résultats des reseaux ne sont pas garantis...
 ```
 A = reseau.predict(X_p)
 ```
+Les résultats des reseaux ne sont pas garantis...
