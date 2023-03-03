@@ -1,4 +1,4 @@
-from layer import Layer
+from Res_neur.layer import Layer
 import numpy as np
 
 # inherit from base class Layer
