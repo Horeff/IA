@@ -9,8 +9,8 @@ import numpy as np
 
 
   
-def create_res(*args):
-  return Neurone.reseau(*args)
+def create_res(*args, **kwargs):
+  return Neurone.reseau(*args, **kwargs)
 
 def conv_res(layers, *args):
   # network
