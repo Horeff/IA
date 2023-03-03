@@ -14,8 +14,12 @@ reseau = home.create_res(X_train, y_train, X_test = None, y_test = None, hidden_
 ```
 * Pour un reseau convolutionnel
 ```
-Conv = home.conv_res(*args)
+Conv = home.conv_res(layers, x_train, y_train, n_iter, learning_rate)
 ```
+On recommande n_iter = 1000 et learning_rate = 0.3.
+example pour layers : [[(10,10,1), (3,3), 1], 
+                       [(8,8,1), (3,3), 1], 
+                       [(6,6,1), (3,3), 2)]]
 * Pour un reseau lstm
 ```
 lstm = home.lstm_res(*args)
