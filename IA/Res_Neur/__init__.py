@@ -1,5 +1,5 @@
-import network
-from network import Network
+import Network
+from Network import Network
 from conv_layer import ConvLayer
 from activation_layer import ActivationLayer
 from activations import tanh, tanh_prime
