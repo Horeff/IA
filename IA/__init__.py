@@ -1,6 +1,11 @@
 from IA import Neurone
-from IA import Res_Neur as rn
-print(rn)
+from IA import Res_Neur
+from Res_Neur.Network import Network
+from Res_Neur.conv_layer import ConvLayer
+from Res_Neur.activation_layer import ActivationLayer
+from Res_Neur.activations import tanh, tanh_prime
+from Res_Neur.losses import mse, mse_prime
+from Res_Neur.fc_layer import FCLayer
 import numpy as np
 
 class IA_home:
@@ -12,7 +17,7 @@ class IA_home:
   
   def conv_res(self, layers, *args):
     # network
-    net = rn.Network()
+    net = Network()
     for lay in layers:
       net.add(ConvLayer(*lay))
       net.add(ActivationLayer(tanh, tanh_prime))
@@ -22,7 +27,7 @@ class IA_home:
     return net
   
   def lstm_res(self, layers, *args):
-    net = rn.Network()
+    net = Network()
 
   def example_xor(self):
     # training data
@@ -30,7 +35,7 @@ class IA_home:
     y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
     
     # network
-    net = rn.Network()
+    net = Network()
     net.add(FCLayer(2, 3))
     net.add(ActivationLayer(tanh, tanh_prime))
     net.add(FCLayer(3, 1))
