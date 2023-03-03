@@ -1,6 +1,7 @@
 from IA import Neurone
 from IA import Res_Neur
-from Res_Neur.Network import Network
+from IA.Res_Neur.Network import Network
+print(Network)
 from Res_Neur.conv_layer import ConvLayer
 from Res_Neur.activation_layer import ActivationLayer
 from Res_Neur.activations import tanh, tanh_prime
