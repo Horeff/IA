@@ -86,8 +86,3 @@ class IA_home:
     # test on 3 samples
     out = net.predict(x_test[0:3])
     return {'predicted': out, 'true': y_test[0:3]}
-    print("\n")
-    print("predicted values : ")
-    print(out, end="\n")
-    print("true values : ")
-    print(y_test[0:3])
