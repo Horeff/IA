@@ -1,4 +1,4 @@
-from IA import Neurone, 
+from IA import Neurone
 from IA.Network import Network
 from IA.conv_layer import ConvLayer
 from IA.activation_layer import ActivationLayer
