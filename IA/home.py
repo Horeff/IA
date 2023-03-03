@@ -1,5 +1,4 @@
-from IA import Neurone
-from IA.Network import Network
+from IA import Neurone, Network
 from IA.conv_layer import ConvLayer
 from IA.activation_layer import ActivationLayer
 from IA.activations import tanh, tanh_prime
