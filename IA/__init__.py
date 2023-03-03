@@ -1,5 +1,6 @@
 from IA import Neurone
 from IA import Res_Neur as rn
+print(rn)
 import numpy as np
 
 class IA_home:
