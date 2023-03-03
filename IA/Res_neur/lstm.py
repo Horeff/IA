@@ -1,5 +1,5 @@
-from Res_neur.layer import Layer
-from Res_neur.activations import sigmoid, tanh, tanh_prime
+from IA.Res_neur.layer import Layer
+from IA.Res_neur.activations import sigmoid, tanh, tanh_prime
 import numpy as np
 
 class lstm(Layer):
