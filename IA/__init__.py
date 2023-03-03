@@ -1,5 +1,5 @@
 from IA import Neurone
-from IA import Res_Neur
+from IA import Res_Neur as rn
 import numpy as np
 
 class IA_home:
@@ -11,7 +11,7 @@ class IA_home:
   
   def conv_res(self, layers, *args):
     # network
-    net = Network()
+    net = rn.Network()
     for lay in layers:
       net.add(ConvLayer(*lay))
       net.add(ActivationLayer(tanh, tanh_prime))
@@ -21,7 +21,7 @@ class IA_home:
     return net
   
   def lstm_res(self, layers, *args):
-    net = Network()
+    net = rn.Network()
 
   def example_xor(self):
     # training data
@@ -29,7 +29,7 @@ class IA_home:
     y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
     
     # network
-    net = Network()
+    net = rn.Network()
     net.add(FCLayer(2, 3))
     net.add(ActivationLayer(tanh, tanh_prime))
     net.add(FCLayer(3, 1))
