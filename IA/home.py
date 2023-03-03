@@ -1,10 +1,10 @@
 from IA import Neurone
-from Network import Network
-from conv_layer import ConvLayer
-from activation_layer import ActivationLayer
-from activations import tanh, tanh_prime
-from losses import mse, mse_prime
-from fc_layer import FCLayer
+from IA.Network import Network
+from IA.conv_layer import ConvLayer
+from IA.activation_layer import ActivationLayer
+from IA.activations import tanh, tanh_prime
+from IA.losses import mse, mse_prime
+from IA.fc_layer import FCLayer
 import numpy as np
 
 
