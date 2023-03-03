@@ -1,6 +1,6 @@
 from IA import Neurone
 from IA.Network import Network
-from IA.conv_layer import ConvLayer
+from IA.Res_neur.conv_layer import ConvLayer
 from IA.Res_neur.activation_layer import ActivationLayer
 from IA.Res_neur.activations import tanh, tanh_prime
 from IA.Res_neur.losses import mse, mse_prime
