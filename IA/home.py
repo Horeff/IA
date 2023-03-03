@@ -32,7 +32,7 @@ def example_xor():
   y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
 
   # network
-  net = Network()
+  net = Network.Network()
   net.add(FCLayer(2, 3))
   net.add(ActivationLayer(tanh, tanh_prime))
   net.add(FCLayer(3, 1))
