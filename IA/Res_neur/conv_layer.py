@@ -1,4 +1,4 @@
-from Res_neur.layer import Layer
+from IA.Res_neur.layer import Layer
 from scipy import signal
 import numpy as np
 
