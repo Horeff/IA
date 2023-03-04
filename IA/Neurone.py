@@ -157,4 +157,4 @@ class reseau:
     def predict(self, X):
         activations = self.forward_propagation(X)
         Af = activations['A' + str(self.C)]
-        return Af >= 0.5
+        return round(Af)
