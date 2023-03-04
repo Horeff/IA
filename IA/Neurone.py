@@ -175,7 +175,9 @@ class multiclass_reseau:
         prediction = []
         for res in self.reseaux:
             prediction.append(res.predict(X))
-        print(prediction)
-        print(self.classes)
-        return [self.classes[i] for i in np.where(prediction == 1)[0]]
+        indexes = np.where(prediction == 1)[0]
+        if indexes == []:
+            return self.classes[-1]
+        else:
+            return [self.classes[i] for i in indexes]
             
