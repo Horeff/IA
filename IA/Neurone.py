@@ -168,6 +168,8 @@ class multiclass_reseau:
             y_p = y == self.classes[elem]
             if y_t is not None: 
                 y_t_p = y_t == self.classes[elem]
+            else:
+                y_t_p = None
             self.reseaux.append(reseau(X, y_p, X_t, y_t_p, learning_rate, n_iter, loss, act, hidden_layers))
 
     def predict(self, X):
