@@ -10,7 +10,7 @@ import numpy as np
 
   
 def create_res(X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
-  return Neurone.reseau(X, y, X_t, y_t, learning_rate, n_iter, loss, act, hidden_layers)
+  return Neurone.reseau(X, y, X_t = X_t, y_t = y_t, learning_rate = learning_rate, n_iter = n_iter, loss = loss, act = act, hidden_layers = hidden_layers)
 
 def conv_res(layers, *args):
   # network
