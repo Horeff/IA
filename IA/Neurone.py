@@ -162,6 +162,7 @@ class reseau:
 class multiclass_reseau:
     def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
         self.classes = set(y.flatten())
+        print(self.classes)
         self.reseaux = []
         for elem in range(len(self.classes)-1):
             y_p = y == self.classes[elem]
