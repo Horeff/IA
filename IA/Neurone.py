@@ -172,9 +172,9 @@ class multiclass_reseau:
             self.reseaux.append(reseau(X, y_p, X_t, y_t_p, learning_rate, n_iter, loss, act, hidden_layers))
 
     def predict(self, X):
-        prediction = []
+        prediction = np.array([])
         for res in self.reseaux:
-            prediction.append(res.predict(X)[0][0])
+            prediction += res.predict(X)[0][0]
         indexes = np.where(prediction == 1)[0]
         print(indexes, prediction)
         if len(indexes) == 0:
