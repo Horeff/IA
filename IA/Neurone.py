@@ -157,5 +157,4 @@ class reseau:
     def predict(self, X):
         activations = self.forward_propagation(X)
         Af = activations['A' + str(self.C)]
-        print(Af)
         return Af
