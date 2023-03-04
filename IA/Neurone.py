@@ -157,7 +157,7 @@ class reseau:
     def predict(self, X):
         activations = self.forward_propagation(X)
         Af = activations['A' + str(self.C)]
-        return np.round(Af)
+        return Af >= 0.5
 
 class multiclass_reseau:
     def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
