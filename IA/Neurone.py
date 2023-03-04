@@ -174,7 +174,7 @@ class multiclass_reseau:
     def predict(self, X):
         prediction = []
         for res in self.reseaux:
-            prediction.append(res.predict(X).flatten())
+            prediction.append(res.predict(X)[0][0])
         indexes = np.where(prediction == 1)[0]
         print(indexes, prediction)
         if len(indexes) == 0:
