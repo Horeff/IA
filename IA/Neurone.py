@@ -158,3 +158,20 @@ class reseau:
         activations = self.forward_propagation(X)
         Af = activations['A' + str(self.C)]
         return np.round(Af)
+
+class multiclass_reseau:
+    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
+        self.classes = set(y)
+        self.reseaux = []
+        for elem in range(len(self.classes)-1):
+            y_p = y == self.classes[elem]
+            if y_t is not None: 
+                y_t_p = y_t == self.classes[elem]
+            self.reseaux.append(reseau(X, y_p, X_t, y_t_p, learning_rate, n_iter, loss, act, hidden_layers))
+
+    def predict(self, X):
+        prediction = []
+        for res in self.reseaux:
+            prediction.append(res.predict(X))
+        return [self.classes[i] for i in np.where(prediction == 1)[0]]
+            
