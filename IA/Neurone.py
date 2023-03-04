@@ -83,7 +83,7 @@ class neurone:
         return A >= 0.5
 
 class reseau:
-    def __init__(self,X, y, X_t = None, y_t = None, hidden_layers = (16, 16, 16), learning_rate = 0.01, n_iter = 3000, act = sigm, loss = log_loss):
+    def __init__(self,X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
         self.loss = loss
         self.act = act
         self.dimensions = list(hidden_layers)
