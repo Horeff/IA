@@ -10,7 +10,7 @@ import numpy as np
 
   
 def create_res(X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = Neurone.log_loss, act = Neurone.sigm, hidden_layers = (16, 16, 16)):
-  classes = set(y)
+  classes = set(y.flatten())
   if len(set) == 2:
     return Neurone.reseau(X, y, X_t = X_t, y_t = y_t, learning_rate = learning_rate, n_iter = n_iter, loss = loss, act = act, hidden_layers = hidden_layers)
   else:
