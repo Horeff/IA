@@ -115,7 +115,7 @@ class reseau:
                     act = self.forward_propagation(X_t)
                     self.training_history[i//10, 2] = (self.loss(y_t.flatten(), act['A' + str(self.C)].flatten()))
                     y_pred = self.predict(X_t)
-                    self.training_history[i//10, 3] = (accuracy_score(y_t.flatten(), y_pred.flatten()))
+                    self.training_history[i//10, 3] = (accuracy_score(y_t.flatten(), y_pred.argmax(axis=1)))
         # Plot courbe d'apprentissage
         self.fig = plt.figure(figsize=(12, 4))
         plt.subplot(1, 2, 1)
