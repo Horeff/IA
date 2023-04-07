@@ -2,7 +2,6 @@ import random
 
 import numpy as np
 import math
-import matplotlib.pyplot as plt
 
 def sigmoid(x): 
     return 1. / (1 + np.exp(-x))
@@ -168,7 +167,7 @@ class LstmNetwork():
             diff_s = self.lstm_node_list[idx + 1].state.bottom_diff_s
             self.lstm_node_list[idx].top_diff_is(diff_h, diff_s)
             idx -= 1 
-        self.lstm_param.apply_diff()
+
         return loss
 
     def x_list_clear(self):
@@ -190,8 +189,7 @@ class LstmNetwork():
             s_prev = self.lstm_node_list[idx - 1].state.s
             h_prev = self.lstm_node_list[idx - 1].state.h
             self.lstm_node_list[idx].bottom_data_is(x, s_prev, h_prev)
-
-
+  
 
 class ToyLossLayer:
     """
@@ -208,7 +206,7 @@ class ToyLossLayer:
         return diff
 
 
-def example_0(data):
+def example_0():
     # learns to repeat simple sequence from random inputs
     np.random.seed(0)
 
@@ -217,7 +215,7 @@ def example_0(data):
     x_dim = 50
     lstm_param = LstmParam(mem_cell_ct, x_dim)
     lstm_net = LstmNetwork(lstm_param)
-    y_list = data
+    y_list = [-0.5, 0.2, 0.1, -0.5]
     input_val_arr = [np.random.random(x_dim) for _ in y_list]
 
     for cur_iter in range(100):
@@ -233,4 +231,3 @@ def example_0(data):
         print("loss:", "%.3e" % loss)
         lstm_param.apply_diff(lr=0.1)
         lstm_net.x_list_clear()
-    return np.array(["% 2.5f" % lstm_net.lstm_node_list[ind].state.h[0] for ind in range(len(y_list))])
