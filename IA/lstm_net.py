@@ -2,6 +2,7 @@ import random
 from matplotlib import pyplot as plt
 import numpy as np
 import math
+from tqdm import tqdm
 
 def sigmoid(x): 
     return 1. / (1 + np.exp(-x))
