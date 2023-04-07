@@ -241,17 +241,19 @@ class network:
       self.mem_cell_ct = mem_cell_ct
       self.x_dim = x_dim
       self.train(X,y,n_iter)
+      self.X = X
+      self.y = y
 
     def train(self, X, y, n_iter = 100, debug = False):
       loss_l = []
       for cur_iter in tqdm(range(n_iter)):
         if debug : print("iter", "%2s" % str(cur_iter), end=": ")
-        for ind in range(len(y_list)):
-            lstm_net.x_list_add(input_val_arr[ind])
+        for ind in range(len(y)):
+            lstm_net.x_list_add(X[ind])
         if debug : print("y_pred = [" +
-              ", ".join(["% 2.5f" % lstm_net.lstm_node_list[ind].state.h[0] for ind in range(len(y_list))]) +
+              ", ".join(["% 2.5f" % lstm_net.lstm_node_list[ind].state.h[0] for ind in range(len(y))]) +
               "]", end=", ")
-        loss = lstm_net.y_list_is(y_list, ToyLossLayer)
+        loss = lstm_net.y_list_is(y, ToyLossLayer)
         loss_l.append(loss)
         if debug : print("loss:", "%.3e" % loss)
         lstm_param.apply_diff(lr=0.1)
