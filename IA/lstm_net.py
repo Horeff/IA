@@ -235,13 +235,14 @@ def example_0():
 
 
 class network:
-    def __init__(self, X, y, mem_cell_ct = 100, x_dim = 50, debug = False):
+    def __init__(self, X, y, n_iter = 100, mem_cell_ct = 100, x_dim = 50, debug = False):
       self.lstm_param = LstmParam(mem_cell_ct, x_dim)
       self.lstm_net = LstmNetwork(self.lstm_param)
       self.mem_cell_ct = mem_cell_ct
       self.x_dim = x_dim
+      self.train(X,y,n_iter)
 
-    def train(self,X, y, n_iter = 100, debug = False):
+    def train(self, X, y, n_iter = 100, debug = False):
       loss_l = []
       for cur_iter in tqdm(range(n_iter)):
         if debug : print("iter", "%2s" % str(cur_iter), end=": ")
