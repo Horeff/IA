@@ -260,10 +260,10 @@ class network:
         if debug : print("loss:", "%.3e" % loss)
         self.lstm_param.apply_diff(lr=0.1)
         self.lstm_net.x_list_clear()
-        plt.figure()
-        plt.title("Loss")
-        plt.plot(loss_l)
-        plt.show()
+      plt.figure()
+      plt.title("Loss")
+      plt.plot(loss_l)
+      plt.show()
 
 
 
