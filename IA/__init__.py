@@ -1,4 +1,5 @@
 from IA import Neurone
+from IA import lstm_net
 from IA.Network import Network
 from IA.Res_neur.conv_layer import ConvLayer
 from IA.Res_neur.flatten_layer import FlattenLayer
@@ -7,7 +8,6 @@ from IA.Res_neur.activations import tanh, tanh_prime
 from IA.Res_neur.losses import mse, mse_prime
 from IA.Res_neur.fc_layer import FCLayer
 import numpy as np
-
 
   
 def create_res(X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = Neurone.log_loss, act = Neurone.sigm, hidden_layers = (16, 16, 16)):
@@ -28,8 +28,8 @@ def conv_res(layers, *args):
   net.fit(*args)
   return net
 
-def lstm_res(layers, *args):
-  net = Network()
+def lstm_res(layers, X, y, n_iter = 100, mem_cell_ct = 100, x_dim = 50, debug = False):
+  return lstm_net.network(X, y, n_iter, mem_cell_ct, x_dim, debug)
 
 def example_xor():
   # training data
