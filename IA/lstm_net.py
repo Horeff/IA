@@ -242,7 +242,7 @@ class network:
       self.lstm_net = LstmNetwork(self.lstm_param)
       self.mem_cell_ct = mem_cell_ct
       self.x_dim = x_dim
-      self.train(X,y,n_iter)
+      self.train(X,y,n_iter, debug)
       self.X = X
       self.y = y
 
