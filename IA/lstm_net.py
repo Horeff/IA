@@ -268,6 +268,8 @@ class network:
 
     def Predict(self,X):
         self.lstm_net.x_list_add(X)
-        return self.lstm_net.lstm_node_list[-1].state.h[0]
+        p = self.lstm_net.lstm_node_list[-1].state.h[0]
+        self.lstm_net.x_list_clear()
+        return p
 
 
