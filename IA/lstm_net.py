@@ -237,11 +237,12 @@ def example_0():
 
 
 class network:
-    def __init__(self, X, y, n_iter = 100, mem_cell_ct = 100, x_dim = 50, debug = False):
+    def __init__(self, X, y, n_iter = 100, lr = 0.01, mem_cell_ct = 100, x_dim = 50, debug = False):
       self.lstm_param = LstmParam(mem_cell_ct, x_dim)
       self.lstm_net = LstmNetwork(self.lstm_param)
       self.mem_cell_ct = mem_cell_ct
       self.x_dim = x_dim
+      self.lr = lr
       self.train(X,y,n_iter, debug)
       self.X = X
       self.y = y
@@ -258,13 +259,15 @@ class network:
         loss = self.lstm_net.y_list_is(y, ToyLossLayer)
         loss_l.append(loss)
         if debug : print("loss:", "%.3e" % loss)
-        self.lstm_param.apply_diff(lr=0.1)
+        self.lstm_param.apply_diff(self.lr)
         self.lstm_net.x_list_clear()
       plt.figure()
       plt.title("Loss")
       plt.plot(loss_l)
       plt.show()
 
-
+    def Predict(self,X):
+        self.lstm_net.x_list_add(X)
+        return self.lstm_net.lstm_node_list[-1].state.h[0]
 
 
