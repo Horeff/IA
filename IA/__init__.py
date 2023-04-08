@@ -29,7 +29,7 @@ def conv_res(layers, *args):
   return net
 
 def lstm_res(X, y, n_iter = 100, lr = 0.01, mem_cell_ct = 100, x_dim = 50, debug = False):
-  return lstm_net.network(X, y, n_iter, lr, mem_cell_ct, x_dim, debug)
+  return lstm_net.network(X, y, n_iter = n_iter, lr = lr, mem_cell_ct = mem_cell_ct, x_dim = x_dim, debug = debug)
 
 def example_xor():
   # training data
