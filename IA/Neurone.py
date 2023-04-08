@@ -11,12 +11,29 @@ def log_loss_sm(A,y):
     epsilon = 1e-15
     return 1 / len(y) * np.sum(-y * np.log(A + epsilon) - (1 - y) * np.log(1 - A + epsilon))
 
+def rec_norm(X, n, min = None, max = None):
+    epsilon = 1e-11
+    if n == 0:
+        print(X)
+        return None
+    if n == 1:
+        if max is None:
+            max = X.max()
+        if min is None:
+            min = X.min()
+        return (X - min)/(max - min + epsilon)
+    else:
+        return np.array([rec_norm(X[i], len(X.shape) - 1) for i in range(len(X))])
+
 def norm(X, max = None, min = None):
-    if max is None:
-        max = X.max()
-    if min is None:
-        min = X.min()
-    return (X - min)/(max - min)
+    if len(X.shape) == 1:
+        if max is None:
+            max = X.max()
+        if min is None:
+            min = X.min()
+        return (X - min)/(max - min)
+    else:
+        return rec_norm(X, len(X.shape))
 
 def flatten(X):
     return X.reshape(X.shape[0], -1)
