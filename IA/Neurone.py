@@ -25,8 +25,8 @@ def rec_norm(X, n, min = None, max = None):
     else:
         return np.array([rec_norm(X[i], len(X.shape) - 1) for i in range(len(X))])
 
-def norm(X, max = None, min = None):
-    if len(X.shape) == 1:
+def norm(X, max = None, min = None, mc = False):
+    if len(X.shape) == 1 or not mc:
         if max is None:
             max = X.max()
         if min is None:
