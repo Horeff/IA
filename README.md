@@ -1,7 +1,9 @@
 # IA
 
 ## Instalation
-```pip install git+https://github.com/Horeff/IA.git#egg=IA```
+```
+pip install git+https://github.com/Horeff/IA.git#egg=IA
+```
 
 ## Utilisation
 ```
