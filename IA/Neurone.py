@@ -7,6 +7,17 @@ from tqdm import tqdm
 def sigm(Z):
     return 1/(1+np.exp(-Z))
 
+def vectorized_result(y, dim):
+    """Return a dim-dimensional unit vector with a 1.0 in the j'th position
+    and zeroes elsewhere.
+    """
+    if len(np.unique(y)) == 2:
+        return y.T
+    e = np.zeros((y.shape[0], dim))
+    for i in range(len(y)):
+        e[i][y[i]] = 1.0
+    return e
+
 def log_loss_sm(A,y):
     epsilon = 1e-15
     return 1 / len(y) * np.sum(-y * np.log(A + epsilon) - (1 - y) * np.log(1 - A + epsilon))
@@ -177,24 +188,90 @@ class reseau:
         return Af >= 0.5
 
 class multiclass_reseau:
-    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.01, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
+    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.001, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
+        self.loss = loss
+        self.act = act
         self.classes = np.unique(y)
-        self.reseaux = []
-        for elem in range(len(self.classes)-1):
-            y_p = y == self.classes[elem]
-            if y_t is not None: 
-                y_t_p = y_t == self.classes[elem]
-            else:
-                y_t_p = None
-            self.reseaux.append(reseau(X, y_p, X_t, y_t_p, learning_rate, n_iter, loss, act, hidden_layers))
+        self.dimensions = list(hidden_layers)
+        self.dimensions.insert(0, X.shape[0])
+        if len(np.unique(y)) != 2:
+            self.dimensions.append(len(np.unique(y)))
+        else:
+            self.dimensions.append(1)
+        np.random.seed(1)
+        self.l_dim = len(self.dimensions)
+        self.dim = self.dimensions
+        self.parametres = {}
+        for c in range(1,self.l_dim-1):
+            self.parametres['W'+str(c)] = np.random.randn(self.dimensions[c], self.dimensions[c-1])
+            self.parametres['b'+str(c)] = np.random.randn(self.dimensions[c], 1)
+        self.parametres['W'+str(self.l_dim-1)] = np.random.randn(self.dimensions[self.l_dim-1], self.dimensions[self.l_dim-2])
+        self.parametres['b'+str(self.l_dim-1)] = np.random.randn(self.dimensions[self.l_dim-1], 1)
+        self.C = len(self.parametres) // 2
+        self.training_history = np.zeros((int(n_iter)//10, 4))
+        self.fit(X, y, X_t, y_t, learning_rate, n_iter)
+
+    def fit(self,X, y, X_t = None, y_t = None, learning_rate = 0.001, n_iter = 3000):
+        # gradient descent
+        for i in tqdm(range(n_iter)):
+            activations = self.forward_propagation(X)
+            gradients = self.back_propagation(y, activations)
+            self.update(gradients, learning_rate)
+            Af = activations['A' + str(self.C)]
+            if i%10 == 0:
+                # calcul du log_loss et de l'accuracy
+                self.training_history[i//10, 0] = (self.loss(vectorized_result(y.flatten(), len(np.unique(y.flatten()))).flatten(), Af.flatten()))
+                y_pred = self.predict(X)
+                self.training_history[i//10, 1] = (top_k_accuracy_score(y.flatten(), y_pred, k=1, labels=np.arange(len(np.unique(y)))))
+                # Pour le test set
+                if X_t is not None and y_t is not None:
+                    act = self.forward_propagation(X_t)
+                    self.training_history[i//10, 2] = (self.loss(vectorized_result(y_t.flatten(), len(np.unique(y_t.flatten()))).flatten(), act['A' + str(self.C)].flatten()))
+                    y_pred = self.predict(X_t)
+                    self.training_history[i//10, 3] = (top_k_accuracy_score(y_t.flatten(), y_pred.flatten(), k=1, labels=np.arange(len(np.unique(y)))))
+        # Plot courbe d'apprentissage
+        self.fig = plt.figure(figsize=(12, 4))
+        plt.subplot(1, 2, 1)
+        plt.plot(self.training_history[:, 0], label='train loss')
+        if X_t is not None and y_t is not None:
+            plt.plot(self.training_history[:, 2], label='test loss')
+        plt.legend()
+        plt.subplot(1, 2, 2)
+        plt.plot(self.training_history[:, 1], label='train acc')
+        if X_t is not None and y_t is not None:
+            plt.plot(self.training_history[:, 3], label='test acc')
+        plt.legend()
+        plt.show()
+
+    def forward_propagation(self, X):
+        activations = {'A0': X}
+        for c in range(1, self.C + 1):
+            Z = self.parametres['W' + str(c)].dot(activations['A' + str(c - 1)]) + self.parametres['b' + str(c)]
+            activations['A' + str(c)] = self.act(Z)
+        return activations
+
+    def back_propagation(self, y_p, activations):
+        y = vectorized_result(y_p[0], len(np.unique(y_p)))
+        try:
+            m = y.shape[1]
+        except:
+            m = 2
+        dZ = activations['A' + str(self.C)] - y.T
+        gradients = {}
+
+        for c in reversed(range(1, self.C + 1)):
+            gradients['dW' + str(c)] = 1/m * np.dot(dZ, activations['A' + str(c - 1)].T)
+            gradients['db' + str(c)] = 1/m * np.sum(dZ, axis=1, keepdims=True)
+            if c > 1:
+                dZ = np.dot(self.parametres['W' + str(c)].T, dZ) * activations['A' + str(c - 1)] * (1 - activations['A' + str(c - 1)])
+        return gradients
+
+    def update(self, gradients, learning_rate):
+        for c in range(1, self.C + 1):
+            self.parametres['W' + str(c)] = self.parametres['W' + str(c)] - learning_rate * gradients['dW' + str(c)]
+            self.parametres['b' + str(c)] = self.parametres['b' + str(c)] - learning_rate * gradients['db' + str(c)]
 
     def predict(self, X):
-        prediction = np.array([])
-        for res in self.reseaux:
-            prediction = np.concatenate((prediction, res.predict(X)[0]))
-        indexes = np.where(prediction == 1)[0]
-        if len(indexes) == 0:
-            return [self.classes[-1]]
-        else:
-            return [self.classes[i] for i in indexes]
-            
+        activations = self.forward_propagation(X)
+        Af = activations['A' + str(self.C)]
+        return Af.T
