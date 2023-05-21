@@ -18,6 +18,7 @@ def vectorized_result(y, dim):
         e[i][y[i]] = 1.0
     return e
 
+#for cross entropy loss : https://towardsdatascience.com/cross-entropy-for-classification-d98e7f974451
 def log_loss_sm(A,y):
     epsilon = 1e-15
     return 1 / len(y) * np.sum(-y * np.log(A + epsilon) - (1 - y) * np.log(1 - A + epsilon))
