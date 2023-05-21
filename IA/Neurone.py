@@ -22,6 +22,13 @@ def log_loss_sm(A,y):
     epsilon = 1e-15
     return 1 / len(y) * np.sum(-y * np.log(A + epsilon) - (1 - y) * np.log(1 - A + epsilon))
 
+def log_loss_multi(y, A):
+    epsilon = 1e-15
+    liste = []
+    for i, j in zip(A, y.T):
+        liste.append(1 / len(y) * np.sum(-j * np.log(i + epsilon) - (1 - j) * np.log(1 - i + epsilon)))
+    return np.sum(liste)
+
 def rec_norm(X, n, min = None, max = None):
     epsilon = 1e-11
     if n == 0:
@@ -187,8 +194,8 @@ class reseau:
         Af = activations['A' + str(self.C)]
         return Af >= 0.5
 
-class multiclass_reseau:
-    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.001, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
+class reseau:
+    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.001, n_iter = 3000, loss = log_loss_multi, act = sigm, hidden_layers = (16, 16, 16)):
         self.loss = loss
         self.act = act
         self.classes = np.unique(y)
@@ -220,13 +227,13 @@ class multiclass_reseau:
             Af = activations['A' + str(self.C)]
             if i%10 == 0:
                 # calcul du log_loss et de l'accuracy
-                self.training_history[i//10, 0] = (self.loss(vectorized_result(y.flatten(), len(np.unique(y.flatten()))).flatten(), Af.flatten()))
+                self.training_history[i//10, 0] = (self.loss(vectorized_result(y.flatten(), len(np.unique(y.flatten()))), Af))
                 y_pred = self.predict(X)
                 self.training_history[i//10, 1] = (top_k_accuracy_score(y.flatten(), y_pred, k=1, labels=np.arange(len(np.unique(y)))))
                 # Pour le test set
                 if X_t is not None and y_t is not None:
                     act = self.forward_propagation(X_t)
-                    self.training_history[i//10, 2] = (self.loss(vectorized_result(y_t.flatten(), len(np.unique(y_t.flatten()))).flatten(), act['A' + str(self.C)].flatten()))
+                    self.training_history[i//10, 2] = (self.loss(vectorized_result(y_t.flatten(), len(np.unique(y_t.flatten()))), act['A' + str(self.C)]))
                     y_pred = self.predict(X_t)
                     self.training_history[i//10, 3] = (top_k_accuracy_score(y_t.flatten(), y_pred.flatten(), k=1, labels=np.arange(len(np.unique(y)))))
         # Plot courbe d'apprentissage
