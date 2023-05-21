@@ -195,7 +195,7 @@ class reseau:
         return Af >= 0.5
 
 class multiclass_reseau:
-    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.001, n_iter = 3000, loss = log_loss, act = sigm, hidden_layers = (16, 16, 16)):
+    def __init__(self, X, y, X_t = None, y_t = None, learning_rate = 0.001, n_iter = 3000, loss = log_loss_multi, act = sigm, hidden_layers = (16, 16, 16)):
         self.loss = loss
         self.act = act
         self.classes = np.unique(y)
