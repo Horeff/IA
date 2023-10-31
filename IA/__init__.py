@@ -21,7 +21,7 @@ def conv_res(layers, *args):
   # network
   net = Network()
   for lay in layers:
-    net.add(FCLayer(*lay, 1))
+    net.add(FCLayer(*lay))
     net.add(ActivationLayer(tanh, tanh_prime))
   # train
   net.use(mse, mse_prime)
