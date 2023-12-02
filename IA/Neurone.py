@@ -1,6 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from sklearn.metrics import accuracy_score, log_loss
+from sklearn.metrics import accuracy_score, log_loss, top_k_accuracy_score
 from sklearn.datasets import make_blobs, make_circles
 from tqdm import tqdm
 
